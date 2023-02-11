@@ -1,17 +1,17 @@
-import * as z from 'zod';
-import { type CompletePost, RelatedPostModel, type CompleteUser, RelatedUserModel } from '.';
+import * as z from "zod"
+import { CompletePost, RelatedPostModel, CompleteUser, RelatedUserModel } from "./index"
 
 export const CommentModel = z.object({
-	id: z.number().int(),
-	userId: z.string(),
-	postId: z.number().int(),
-	content: z.string(),
-	createdAt: z.date()
-});
+  id: z.number().int(),
+  userId: z.string(),
+  postId: z.number().int(),
+  content: z.string(),
+  createdAt: z.date(),
+})
 
 export interface CompleteComment extends z.infer<typeof CommentModel> {
-	post: CompletePost;
-	user: CompleteUser;
+  post: CompletePost
+  user: CompleteUser
 }
 
 /**
@@ -19,9 +19,7 @@ export interface CompleteComment extends z.infer<typeof CommentModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedCommentModel: z.ZodSchema<CompleteComment> = z.lazy(() =>
-	CommentModel.extend({
-		post: RelatedPostModel,
-		user: RelatedUserModel
-	})
-);
+export const RelatedCommentModel: z.ZodSchema<CompleteComment> = z.lazy(() => CommentModel.extend({
+  post: RelatedPostModel,
+  user: RelatedUserModel,
+}))

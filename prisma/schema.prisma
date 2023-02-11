@@ -18,17 +18,17 @@ model User {
   name       String    @unique
   password   String
   authToken  String    @unique
-  createdAt DateTime  @default(now())
-  comment    Comment[]
-  Post       Post[]
+  createdAt  DateTime  @default(now())
+  comments   Comment[]
+  posts      Post[]
 }
 
 model Post {
   id         Int       @id @default(autoincrement())
   userId     String
   content    String
-  createdAt DateTime  @default(now())
-  comment    Comment[]
+  createdAt  DateTime  @default(now())
+  comments   Comment[]
   user       User      @relation(fields: [userId], references: [id])
 }
 
@@ -37,7 +37,7 @@ model Comment {
   userId     String
   postId     Int
   content    String
-  createdAt DateTime  @default(now())
+  createdAt  DateTime @default(now())
   post       Post     @relation(fields: [postId], references: [id])
   user       User     @relation(fields: [userId], references: [id])
 }
