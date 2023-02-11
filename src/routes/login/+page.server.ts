@@ -8,10 +8,11 @@ const formDataSchema = UserModel.pick({ name: true, password: true });
 export const actions: Actions = {
 	login: async ({ request, cookies }) => {
 		const data = await request.formData();
-		const maybeName = data.get('name');
-		const maybePassword = data.get('password');
 
-		const parsed = formDataSchema.safeParse({ name: maybeName, password: maybePassword });
+		const parsed = formDataSchema.safeParse({
+			name: data.get('name'),
+			password: data.get('password')
+		});
 
 		if (!parsed.success) {
 			return fail(400, { message: '名前とパスワードを入力してください' });

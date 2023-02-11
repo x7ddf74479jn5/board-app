@@ -9,10 +9,11 @@ const formDataSchema = UserModel.pick({ name: true, password: true });
 export const actions: Actions = {
 	register: async ({ request }) => {
 		const data = await request.formData();
-		const maybeName = data.get('name');
-		const maybePassword = data.get('password');
 
-		const parsed = formDataSchema.safeParse({ name: maybeName, password: maybePassword });
+		const parsed = formDataSchema.safeParse({
+			name: data.get('name'),
+			password: data.get('password')
+		});
 
 		if (!parsed.success) {
 			return fail(400, { message: '名前・パスワードは必須です。' });
