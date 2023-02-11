@@ -2,7 +2,7 @@ import { db } from '$lib/prisma';
 import { PostModel } from '$lib/zod';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 
-const formDataSchema = PostModel.pick({ content: true });
+const formDataSchema = PostModel.shape.content;
 
 export const actions: Actions = {
 	post: async ({ request, locals }) => {
@@ -15,7 +15,7 @@ export const actions: Actions = {
 			return fail(400, { message: 'タイトルと内容は必須入力です。' });
 		}
 
-		const { content } = parsed.data;
+		const content = parsed.data;
 
 		if (!locals.user) return fail(400, { message: '登録されていないユーザーです。' });
 
