@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator zod {
+  provider = "zod-prisma"
+  output   = "../src/lib/zod"
+}
+
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String    @id @default(uuid())
+  name       String    @unique
+  password   String
+  authToken  String    @unique
+  createdAt DateTime  @default(now())
+  comment    Comment[]
+  Post       Post[]
+}
+
+model Post {
+  id         Int       @id @default(autoincrement())
+  userId     String
+  content    String
+  createdAt DateTime  @default(now())
+  comment    Comment[]
+  user       User      @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  userId     String
+  postId     Int
+  content    String
+  createdAt DateTime  @default(now())
+  post       Post     @relation(fields: [postId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+}
